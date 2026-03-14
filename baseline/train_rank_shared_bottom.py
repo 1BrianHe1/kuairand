@@ -154,7 +154,7 @@ def train_one_epoch(
             continue
         idx = valid_mask.nonzero(as_tuple=True)[0]
 
-        with torch.cuda.amp.autocast(enabled=amp_enabled):
+        with torch.amp.autocast(device_type=device.type, enabled=amp_enabled):
             click_logit = model(
                 user_cat=batch["user_cat"][idx],
                 user_num=batch["user_num"][idx],
@@ -227,7 +227,7 @@ def evaluate_ranker(
             continue
         idx = valid_mask.nonzero(as_tuple=True)[0]
 
-        with torch.cuda.amp.autocast(enabled=amp_enabled):
+        with torch.amp.autocast(device_type=device.type, enabled=amp_enabled):
             click_logit = model(
                 user_cat=batch["user_cat"][idx],
                 user_num=batch["user_num"][idx],
@@ -398,7 +398,7 @@ def main() -> None:
         lr=args.learning_rate,
         weight_decay=args.weight_decay,
     )
-    scaler = torch.cuda.amp.GradScaler(enabled=amp_enabled)
+    scaler = torch.amp.GradScaler(device=device.type, enabled=amp_enabled)
     click_sum = float(train_df["is_click"].sum())
     neg_sum = float(len(train_df) - click_sum)
     pos_weight_value = float(args.pos_weight) if args.pos_weight is not None else (neg_sum / max(click_sum, 1.0))

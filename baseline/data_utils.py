@@ -975,8 +975,8 @@ def encode_rank_context_features(
     hour_bucket = hourmin_arr // 100
     weekday = np.zeros((len(tab_arr),), dtype=np.int64)
     if len(tab_arr) > 0:
-        parsed = pd.to_datetime(date_arr.astype(str), format="%Y%m%d", errors="coerce")
-        weekday = np.nan_to_num(parsed.dt.weekday.to_numpy(dtype=np.float32), nan=0.0).astype(np.int64)
+        parsed = pd.to_datetime(pd.Series(date_arr.astype(str)), format="%Y%m%d", errors="coerce")
+        weekday = parsed.dt.weekday.fillna(0).to_numpy(dtype=np.int64)
     is_weekend = (weekday >= 5).astype(np.int64)
     is_night = ((hour_bucket <= 5) | (hour_bucket >= 23)).astype(np.int64)
 
