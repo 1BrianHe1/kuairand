@@ -1,0 +1,14 @@
+# 1. 忽略 baseline 文件夹内的特定数据/结果目录
+baseline/checkpoints/
+baseline/processed/
+baseline/processed_pure/
+
+# 2. 忽略根目录下的其他大型文件夹和压缩包
+KuaiRand-1K/
+KuaiRand-Pure/
+*.tar.gz
+
+# 3. (可选) 忽略一些常见的系统缓存
+__pycache__/
+*.pyc
+.DS_Store
